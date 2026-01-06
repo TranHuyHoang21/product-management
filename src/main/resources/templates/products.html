@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop anh Tuyền đây</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info span {
+            color: #666;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #3c2525;
+        }
+        
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+        
+        .btn-warning:hover {
+            background: #e0a800;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        
+        .search-bar {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .search-form input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .content {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .pagination a,
+        .pagination span {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+            color: #333;
+        }
+        
+        .pagination a:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .pagination .active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .toolbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            table {
+                font-size: 14px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 15px;
+                overflow-x: auto;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Mua hàng chất lượng cao không ảo giá ở đây</h1>
+        <div class="user-info">
+            <span>Xin chào, <strong sec:authentication="name"></strong></span>
+            <span sec:authentication="authorities"></span>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-secondary">Đăng xuất</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="search-bar">
+        <form class="search-form" th:action="@{/products}" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" 
+                   placeholder="Tìm kiếm sản phẩm...">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <a th:href="@{/products}" class="btn btn-secondary">Xóa lọc</a>
+        </form>
+    </div>
+    
+    <div class="content">
+        <div class="toolbar">
+            <div>
+                <p>Tổng số: <strong th:text="${totalItems}"></strong> sản phẩm</p>
+            </div>
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/products/add}" class="btn btn-primary">Thêm sản phẩm mới</a>
+            </div>
+        </div>
+        
+        <div th:if="${products.size() > 0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Mô tả</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th sec:authorize="hasRole('ADMIN')">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.id}"></td>
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.description}"></td>
+                        <td th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' đ'"></td>
+                        <td th:text="${product.quantity}"></td>
+                        <td sec:authorize="hasRole('ADMIN')">
+                            <div class="actions">
+                                <a th:href="@{/products/edit/{id}(id=${product.id})}" 
+                                   class="btn btn-warning btn-sm">Sửa</a>
+                                <a th:href="@{/products/delete/{id}(id=${product.id})}" 
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">Xóa</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pagination" th:if="${totalPages > 1}">
+                <a th:href="@{/products(page=0, size=${pageSize}, keyword=${keyword})}"
+                   th:classappend="${currentPage == 0} ? 'disabled'">Đầu</a>
+                
+                <a th:href="@{/products(page=${currentPage - 1}, size=${pageSize}, keyword=${keyword})}"
+                   th:if="${currentPage > 0}">Trước</a>
+                
+                <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                      th:if="${i >= currentPage - 2 && i <= currentPage + 2}">
+                    <a th:href="@{/products(page=${i}, size=${pageSize}, keyword=${keyword})}"
+                       th:text="${i + 1}"
+                       th:classappend="${i == currentPage} ? 'active'"></a>
+                </span>
+                
+                <a th:href="@{/products(page=${currentPage + 1}, size=${pageSize}, keyword=${keyword})}"
+                   th:if="${currentPage < totalPages - 1}">Sau</a>
+                
+                <a th:href="@{/products(page=${totalPages - 1}, size=${pageSize}, keyword=${keyword})}"
+                   th:classappend="${currentPage == totalPages - 1} ? 'disabled'">Cuối</a>
+            </div>
+        </div>
+        
+        <div class="no-data" th:if="${products.size() == 0}">
+            <p>Không tìm thấy sản phẩm nào</p>
+        </div>
+    </div>
+</body>
+</html>
